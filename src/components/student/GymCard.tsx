@@ -1,0 +1,14 @@
+"use client";
+
+import Link from "next/link";
+import type { Gym } from "@/lib/fitfinder-data";
+import { useStudent } from "@/context/StudentContext";
+import { Badge } from "@/components/ui/Badge";
+import { Icon } from "@/components/ui/Icon";
+
+export function GymCard({ gym }: { gym: Gym }) {
+  const { savedIds, toggleSaved } = useStudent();
+  const saved = savedIds.includes(gym.id);
+
+  return <article className="overflow-hidden rounded-2xl border border-[#e5e3e2] bg-white shadow-[0_4px_13px_rgba(0,0,0,0.04)]"><div className="relative h-48 overflow-hidden sm:h-56"><img src={gym.image} alt={gym.name} className="h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" /><button type="button" aria-label={saved ? `Remove ${gym.name} from saved gyms` : `Save ${gym.name}`} aria-pressed={saved} onClick={() => toggleSaved(gym.id)} className={`absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/90 transition ${saved ? "text-lime-600" : "text-gray-700"}`}><Icon name="bookmark" size={16} className={saved ? "fill-current" : ""} /></button><span className="absolute right-3 top-3 rounded-full bg-black px-2.5 py-1 text-[10px] font-bold text-lime-400">⚡ {gym.match}% MATCH</span>{gym.accent && <span className="absolute bottom-3 left-3 rounded-full bg-black/80 px-2.5 py-1 text-[10px] font-semibold text-white">{gym.accent}</span>}</div><div className="space-y-3 p-4"><div className="flex items-start justify-between gap-3"><div><h2 className="text-base font-bold">{gym.name}</h2><p className="mt-1 flex items-center gap-1 text-[10px] text-gray-500"><Icon name="map-pin" size={12} />{gym.location} • {gym.distance}</p></div><div className="flex shrink-0 items-center gap-1 text-xs font-medium"><Icon name="star" size={14} className="text-lime-500" />{gym.rating} <span className="text-gray-400">({gym.reviews})</span></div></div><div className="grid grid-cols-2 gap-3 border-y border-[#efeded] py-3 text-[10px]"><div><div className="uppercase tracking-wide text-gray-500">Daily Pass</div><strong className="text-xs">{gym.daily}</strong><span className="text-gray-500"> / day</span></div><div className="text-right"><div className="uppercase tracking-wide text-gray-500">Student Monthly</div><strong className="text-xs">{gym.monthly}</strong><span className="text-gray-500"> / mo</span></div></div><div className="flex flex-wrap gap-1.5">{gym.tags.map((tag) => <Badge key={tag}><span className="text-lime-600">◉</span>{tag}</Badge>)}</div><div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-gray-500">{gym.facilities.map((item) => <span key={item}>♧ {item}</span>)}</div><Link href={`/student/gym/${gym.id}`} className="flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3 text-sm font-semibold text-white transition hover:bg-[#252525]">View Details <Icon name="arrow-right" size={18} /></Link></div></article>;
+}
