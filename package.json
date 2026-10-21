@@ -7,9 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:unit": "node --import tsx --test tests/unit/**/*.test.ts",
-    "test:coverage": "node --import tsx --experimental-test-coverage --test tests/unit/**/*.test.ts",
-    "test:e2e": "playwright test",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio"
@@ -25,7 +22,6 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@types/bcryptjs": "^3.0.0",
     "@types/node": "^20",

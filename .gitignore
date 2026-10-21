@@ -45,3 +45,11 @@ screenshots/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local agent & non-core files
+AGENTS.md
+.agents/
+/docs/
+/e2e/
+/tests/
+playwright.config.ts

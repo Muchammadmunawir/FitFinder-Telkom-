@@ -1,8 +1,6 @@
 # FitFinder Telkom 🏋️‍♂️
 
-FitFinder Telkom adalah platform berbasis web untuk mahasiswa Telkom University dalam menemukan, memfilter, dan membandingkan tempat gym di sekitar kawasan kampus (Sukapura, Sukabirus, Ciganitri, dan Bojongsoang). Platform ini juga menyediakan portal pengelola gym untuk memantau status keanggotaan dan memperbarui inventaris alat latihan.
-
-Proyek ini dibangun mengacu pada dokumen spesifikasi kebutuhan **SKPL** dan perancangan arsitektur **DPPL** mata kuliah Implementasi & Pengujian Perangkat Lunak (IMPAL).
+FitFinder Telkom adalah platform web untuk mahasiswa Telkom University dalam menemukan, memfilter, dan membandingkan tempat gym di sekitar kawasan kampus (Sukapura, Sukabirus, Ciganitri, dan Bojongsoang). Platform ini juga menyediakan portal pengelola gym mitra untuk memantau status keanggotaan dan memperbarui inventaris alat latihan secara terintegrasi.
 
 ---
 
@@ -14,7 +12,6 @@ Proyek ini dibangun mengacu pada dokumen spesifikasi kebutuhan **SKPL** dan pera
 - **Containerization**: Docker & Docker Compose
 - **ORM**: [Prisma ORM](https://www.prisma.io/)
 - **Styling**: Tailwind CSS
-- **Testing**: [Playwright](https://playwright.dev/) (End-to-End Testing) & Node.js Test Runner (Unit Testing)
 
 ---
 
@@ -113,25 +110,8 @@ Untuk mempermudah pengujian alur peran pengguna (RBAC), gunakan akun berikut:
 
 ---
 
-## 🧪 Menjalankan Pengujian (Testing)
+## 🔍 Quality Check (Pemeriksaan Kode)
 
-### 1. Unit Testing (Formula Match Score SKPL-NF-01)
-Menguji logika kalkulasi kecocokan alat, fasilitas, dan anggaran:
-```bash
-npx tsx tests/unit/match-score.test.ts
-```
-
-### 2. End-to-End (E2E) Testing dengan Playwright
-Menjalankan seluruh skenario pengujian otomatis (API, Autentikasi RBAC, Portal Student, dan Portal Owner) pada browser Desktop Chrome & Mobile Chrome:
-```bash
-# Jalankan seluruh test suite
-npx playwright test
-
-# Jalankan test dengan tampilan UI interaktif
-npx playwright test --ui
-```
-
-### 3. Pemeriksaan Kualitas Kode (Linting & Typecheck)
 ```bash
 # Linting kode
 npm run lint
@@ -150,6 +130,7 @@ FitFinder-Telkom-/
 ├── prisma/
 │   ├── schema.prisma        # Definisi model data relasional Prisma
 │   └── seed.ts              # Seeder data master alat & gym Telkom
+├── public/                  # Aset publik statis
 ├── src/
 │   ├── app/                 # Next.js App Router (Halaman & REST API)
 │   │   ├── api/             # Backend API (Auth, Gyms, Equipments, Owner)
@@ -159,9 +140,6 @@ FitFinder-Telkom-/
 │   ├── components/          # Komponen antarmuka (UI, Student, Owner, Auth)
 │   ├── lib/                 # Utility murni (Prisma client, Auth Session, Match Score)
 │   └── middleware.ts        # Route Guarding & RBAC Middleware
-├── e2e/                     # Test suite Playwright End-to-End
-├── tests/                   # Test suite Unit Testing
-├── docs/                    # Dokumen referensi SKPL & DPPL
 ├── .env.example             # Contoh konfigurasi koneksi database
 └── package.json             # Dependensi dan script proyek
 ```
