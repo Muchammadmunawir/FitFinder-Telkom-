@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  student
+  owner
+}
+
+enum LocationZone {
+  Sukapura
+  Sukabirus
+  Ciganitri
+  Buah_Batu
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(student)
+  phone     String?
+  program   String?  @default("S1 Informatika")
+  studentId String?  @default("1301210000")
+  avatar    String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  gyms      Gym[]
+
+  @@map("users")
+}
+
+model Gym {
+  id            Int            @id @default(autoincrement())
+  ownerId       Int            @map("owner_id")
+  owner         User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  slug          String         @unique
+  name          String
+  address       String
+  locationZone  LocationZone   @map("location_zone")
+  distance      String         @default("Near Campus")
+  dailyPrice    Decimal        @map("daily_price") @db.Decimal(10, 2)
+  monthlyPrice  Decimal        @map("monthly_price") @db.Decimal(10, 2)
+  ktmDiscount   Boolean        @default(true) @map("ktm_discount")
+  rating        Decimal        @default(4.8) @db.Decimal(3, 1)
+  reviewsCount  Int            @default(0) @map("reviews_count")
+  image         String         @db.Text
+  accent        String?
+  description   String         @db.Text
+  openingHours  String         @default("07:00") @map("opening_hours")
+  closingHours  String         @default("22:00") @map("closing_hours")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  equipments    GymEquipment[]
+  facilities    GymFacility[]
+
+  @@map("gyms")
+}
+
+model Equipment {
+  id             Int            @id @default(autoincrement())
+  equipmentName  String         @unique @map("equipment_name")
+  gymEquipments  GymEquipment[]
+
+  @@map("equipments")
+}
+
+model GymEquipment {
+  id          Int       @id @default(autoincrement())
+  gymId       Int       @map("gym_id")
+  equipmentId Int       @map("equipment_id")
+  detail      String?
+  gym         Gym       @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@unique([gymId, equipmentId])
+  @@map("gym_equipments")
+}
+
+model GymFacility {
+  id           Int      @id @default(autoincrement())
+  gymId        Int      @map("gym_id")
+  facilityName String   @map("facility_name")
+  detail       String?
+  gym          Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
+
+  @@map("gym_facilities")
+}
